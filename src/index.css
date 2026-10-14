@@ -1,1 +1,5 @@
 @import "tailwindcss";
+
+@theme {
+  --font-sans: "DINPro", "Helvetica Neue", sans-serif;
+}

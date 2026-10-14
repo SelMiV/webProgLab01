@@ -3,15 +3,15 @@ import Footer from './Footer';
 
 function Layout ( {children}) {
     return (
-        <>
+        <div className=' font-sans'>
             <Header />
 
-            <main>
+            <main className="max-w-[1360px] mx-auto">
                 {children}
             </main>
 
             <Footer />
-        </>
+        </div>
     )
 }
 

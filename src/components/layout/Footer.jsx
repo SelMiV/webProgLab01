@@ -1,7 +1,7 @@
 function Footer() {
     return (
         <footer>
-            <p>2026 Ozon clone</p>
+            <p>2026 Demix clone</p>
         </footer>
     )
 }

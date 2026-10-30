@@ -8,7 +8,7 @@ import { formatPrice } from "../../utils/format";
 function CartItem({ item }) {
     const { changeCount, removeFromCart } = useCart();
     const product = item.product;
-    // ссылка на товар сразу с тем цветом, который положили в корзину
+    // ссылка на товар
     const link = product.colorIndex > 0 ? `/product/${product.id}?color=${product.colorIndex}` : `/product/${product.id}`;
 
     return (
@@ -26,7 +26,6 @@ function CartItem({ item }) {
                 <p className="text-gray text-[13px]">{formatPrice(product.price)} / шт.</p>
 
                 <div className="flex items-center justify-between mt-auto pt-3">
-                    {/* количество */}
                     <div className="flex items-center border border-line">
                         <button
                             className="w-9 h-9 flex items-center justify-center hover:bg-light disabled:opacity-30"

@@ -24,7 +24,6 @@ const specNames = {
 function Product() {
         const { id } = useParams();
         const product = products.find((product) => product.id === Number(id));
-        // выбранный цвет берем из адреса (?color=1), его передает карточка
         const [searchParams, setSearchParams] = useSearchParams();
 
         const { addToCart } = useCart();
@@ -85,7 +84,6 @@ function Product() {
             />
 
             <div className="flex flex-col lg:flex-row w-full gap-10">
-                {/* фото: на компьютере сеткой, как на demix.ru */}
                 <div className="hidden md:grid grid-cols-2 gap-3 lg:w-[60%]">
                     {images.map((image) => (
                         <img
@@ -136,7 +134,7 @@ function Product() {
                         Цвет: <span className="text-gray">{allColors[color].name}</span>
                     </p>
 
-                    {/* мини-фото цветов, по клику меняется цвет */}
+                    {/* мини-фото цветов */}
                     {allColors.length > 1 && (
                         <div className="flex gap-2 -mt-2">
                             {allColors.map((c, index) => (
@@ -178,7 +176,7 @@ function Product() {
                         <p className="flex items-center gap-3"><FiRefreshCw /> Возврат в течение 30 дней</p>
                     </div>
 
-                    {/* описание и характеристики - раскрывающиеся блоки */}
+                    {/* описание и характеристики */}
                     <div className="border-t border-line">
                         <button
                             className="w-full flex justify-between items-center py-4 font-bold"
@@ -239,7 +237,7 @@ function Product() {
     )
 }
 
-// key={id} - чтобы при переходе на другой товар (из "похожих") выбранный размер сбрасывался
+// сброс размера
 function ProductPage() {
     const { id } = useParams();
     return <Product key={id} />

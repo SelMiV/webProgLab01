@@ -1,6 +1,6 @@
 import { FaStar } from "react-icons/fa";
 
-// звездочки рейтинга + количество отзывов
+// звездочки рейтинга количество отзывов
 function Rating({ rating, reviews }) {
     const stars = [1, 2, 3, 4, 5];
 

@@ -2,9 +2,7 @@ import { useState } from "react";
 
 import Checkbox from "./Checkbox";
 
-// список чекбоксов: сначала видно 6 штук, остальные по кнопке "Показать ещё"
-// options = [{ value: "Брюки", count: 8 }], checked = ["Брюки"]
-// colors - если передать, рядом с названием рисуется цветной кружок
+// colors если передать, рядом с названием рисуется цветной кружок (для выбора цвета)
 function CheckboxList({ options, checked, onToggle, colors }) {
     const [showAll, setShowAll] = useState(false);
 

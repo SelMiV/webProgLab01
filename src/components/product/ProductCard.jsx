@@ -7,8 +7,6 @@ import { useCart } from "../../context/CartContext";
 import { formatPrice, getDiscount } from "../../utils/format";
 
 // карточка товара
-// фото листаются, если водить мышкой по фото влево-вправо
-// showMenu - при наведении снизу появляется меню с размерами и кнопкой "В корзину" (как на demix.ru)
 function ProductCard({ product, showMenu }) {
     const { addToCart } = useCart();
     const cardRef = useRef(null);
@@ -22,19 +20,18 @@ function ProductCard({ product, showMenu }) {
 
     const discount = getDiscount(product.price, product.oldprice);
 
-    // все цвета товара: основной + другие (если есть)
+    // все цвета товара
     const allColors = [{ name: product.specifications.color, images: product.images }];
     if (product.colors) allColors.push(...product.colors);
 
     // в предпросмотре только первые 6 фото выбранного цвета
     const images = allColors[color].images.slice(0, 6);
 
-    // ссылка на страницу товара сразу с выбранным цветом (?color=1)
+    // ссылка на страницу товара сразу с выбранным цветом 
     const link = color > 0 ? `/product/${product.id}?color=${color}` : `/product/${product.id}`;
     const menuOpen = showMenu && hover;
 
     function handleEnter() {
-        // на телефоне наведения нет, меню не показываем
         if (window.innerWidth >= 768) {
             setHeight(cardRef.current.offsetHeight);
             setHover(true);
@@ -49,7 +46,7 @@ function ProductCard({ product, showMenu }) {
         setAdded(false);
     }
 
-    // какая часть фото под мышкой - такое фото и показываем
+    // пролистывание фоток мышкой
     function handleMove(e) {
         const rect = e.currentTarget.getBoundingClientRect();
         const part = (e.clientX - rect.left) / rect.width;
@@ -93,7 +90,6 @@ function ProductCard({ product, showMenu }) {
             onMouseEnter={handleEnter}
             onMouseLeave={handleLeave}
         >
-            {/* при наведении карточка "всплывает" поверх соседних: белый фон, тень и меню снизу */}
             <div
                 className={"flex flex-col " +
                     (menuOpen ? "absolute -top-3 -left-3 -right-3 p-3 bg-white shadow-[0_0_20px_rgba(0,0,0,0.15)]" : "")}
@@ -107,7 +103,7 @@ function ProductCard({ product, showMenu }) {
                         />
                     </Link>
 
-                    {/* точки - какое фото сейчас */}
+                    {/* точки какое фото сейчас */}
                     {hover && (
                         <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1">
                             {images.map((img, index) => (
@@ -142,10 +138,10 @@ function ProductCard({ product, showMenu }) {
                     )}
                 </div>
 
-                {/* меню при наведении: размеры и кнопка "В корзину" */}
+                {/* меню при наведении размеры и кнопка в корзину*/}
                 {menuOpen && (
                     <div className="pt-3 pb-1">
-                        {/* мини-фото других цветов: при наведении зеленая полоска снизу, по клику меняется цвет */}
+                        {/* мини-фото других цветов */}
                         {allColors.length > 1 && (
                             <div className="flex gap-2 mb-3">
                                 {allColors.map((c, index) => (

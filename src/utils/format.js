@@ -1,9 +1,9 @@
-// 12999 -> "12 999 ₽"
+// форматирование цены
 export function formatPrice(price) {
     return price.toLocaleString("ru-RU") + " ₽";
 }
 
-// склонение слова "товар": 1 товар, 2 товара, 5 товаров
+// склонение слова товар
 export function productsWord(count) {
     const last = count % 10;
     const lastTwo = count % 100;

@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 
 // хлебные крошки
-// items = [{ title: "Каталог", link: "/catalog" }, { title: "Брюки" }]
-// у последнего пункта ссылки нет - это текущая страница
 function Breadcrumbs({ items }) {
     return (
         <nav className="flex flex-wrap items-center gap-2 text-[13px] text-gray py-4">

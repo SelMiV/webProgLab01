@@ -1,7 +1,5 @@
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
-// пагинация: кнопки страниц считаются от количества товаров,
-// поэтому при смене фильтра их количество меняется само
 function Pagination({ page, pagesCount, onChange }) {
     if (pagesCount <= 1) return null;
 

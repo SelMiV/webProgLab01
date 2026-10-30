@@ -8,8 +8,7 @@ import { FiPlay, FiPause, FiChevronLeft, FiChevronRight } from "react-icons/fi";
 import { baseProducts } from "../../data/products.js";
 import ProductCard from "../../components/product/ProductCard.jsx";
 
-// баннеры для большого слайдера (картинки лежат в public/banners)
-// buttons - кнопки "Для него" / "Для нее" поверх баннера
+
 const slides = [
     { image: "/banners/12_10-rotator-dv.webp", link: "/catalog?season=Зима", buttons: true },
     { image: "/banners/01_10-rotator-dv.webp", link: "/catalog/Верхняя одежда" },
@@ -44,7 +43,7 @@ const sports = [
     { title: "Танцы", image: "/banners/dance-demix.jpg", link: "/catalog" },
 ];
 
-// зеленая полоса прокрутки под слайдерами (ее можно тянуть мышкой)
+// зеленая полоса прокрутки под слайдерами
 const scrollbarStyle = {
     "--swiper-scrollbar-sides-offset": "20%",
     "--swiper-scrollbar-bottom": "0px",
@@ -63,12 +62,11 @@ const fadeUp = {
 };
 
 function Home() {
-    const [swiper, setSwiper] = useState(null);     // большой слайдер (чтобы управлять им кнопками)
+    const [swiper, setSwiper] = useState(null);
     const [activeSlide, setActiveSlide] = useState(0);
     const [playing, setPlaying] = useState(true);   // листается сам или стоит на паузе
     const [tab, setTab] = useState(0);              // открытая вкладка
 
-    // параллакс: картинка баннера едет медленнее, чем страница
     const parallaxRef = useRef(null);
     const { scrollYProgress } = useScroll({ target: parallaxRef, offset: ["start end", "end start"] });
     const parallaxY = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
@@ -248,7 +246,7 @@ function Home() {
                 </div>
             </motion.section>
 
-            {/* виды спорта: слайдер, листается свайпом или полосой снизу */}
+            {/* виды спорта */}
             <motion.section {...fadeUp} className="mt-16">
                 <h2 className="text-[28px] md:text-[36px] font-black uppercase mb-6">Виды спорта</h2>
 

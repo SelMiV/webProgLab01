@@ -2,7 +2,6 @@ import { useState } from "react";
 import { FiCheck } from "react-icons/fi";
 import { LuArrowDownUp } from "react-icons/lu";
 
-// варианты сортировки как на demix.ru
 const sortOptions = [
     { value: "popular", title: "По популярности" },
     { value: "cheap", title: "Сначала дешевле" },
@@ -12,7 +11,7 @@ const sortOptions = [
     { value: "discount", title: "По убыванию скидки" },
 ];
 
-// свой выпадающий список вместо обычного select
+// свой выпадающий список
 function SortSelect({ sort, onChange }) {
     const [open, setOpen] = useState(false);
 
@@ -30,7 +29,6 @@ function SortSelect({ sort, onChange }) {
                 <LuArrowDownUp className="text-[20px]" />
             </button>
 
-            {/* видно только 4 пункта, остальные - прокруткой. Зеленая полоса прокрутки - в styles/filters.css */}
             {open && (
                 <div className="sort-select__list absolute right-0 top-full w-[260px] max-h-[192px] overflow-y-auto bg-white shadow-lg z-20">
                     {sortOptions.map((option) => (

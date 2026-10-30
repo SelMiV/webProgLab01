@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useLocation, useParams, useSearchParams } from "react-router-dom";
-import Skeleton from "react-loading-skeleton";
 import { FiSliders } from "react-icons/fi";
 
 import products from "../../data/products.js"
@@ -73,7 +72,6 @@ function Catalog () {
 
     const [sort, setSort] = useState("popular");
     const headerHidden = useHideOnScroll();             // листаем вниз - полоска с фильтрами прячется вместе с шапкой
-    const [loading, setLoading] = useState(false);
 
     // фильтры. Начальные значения берем из адреса (так работают ссылки из меню)
     const [showFilters, setShowFilters] = useState(window.innerWidth >= 1024);  // на телефоне сначала скрыты
@@ -181,11 +179,8 @@ function Catalog () {
     }
 
     function changePage(number) {
-        // имитируем загрузку с сервера, чтобы показать скелетоны
-        setLoading(true);
         setSearchParams({ ...Object.fromEntries(searchParams), page: number });
         window.scrollTo({ top: 0, behavior: "smooth" });
-        setTimeout(() => setLoading(false), 500);
     }
 
     // отметить / снять пункт в блоке (можно выбрать несколько пунктов сразу)
@@ -217,7 +212,8 @@ function Catalog () {
         setPriceFrom(minPrice);
         setPriceTo(maxPrice);
         setSizes([]);
-        setChecked({});
+        // пол из адреса (Мужчинам / Женщинам) остается, его в фильтрах не переключить
+        setChecked(gender ? { gender: [gender] } : {});
         goFirstPage();
     }
 
@@ -280,7 +276,8 @@ function Catalog () {
                             />
                         </div>
 
-                        {filterGroups.map(renderGroup)}
+                        {/* блок "Пол" не показываем, если пол уже выбран (меню, баннер) */}
+                        {filterGroups.filter((group) => !(group.field === "gender" && gender)).map(renderGroup)}
 
                         <FilterBlock title="Цена">
                             <PriceFilter min={minPrice} max={maxPrice} from={priceFrom} to={priceTo} onChange={changePrice} />
@@ -327,20 +324,13 @@ function Catalog () {
 
                     {/* всегда 3 столбца, даже когда фильтры скрыты */}
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-8">
-                        {loading
-                            ? pageProducts.map((product) => (
-                                <div key={product.id}>
-                                    <Skeleton className="aspect-[3/4]" />
-                                    <Skeleton count={2} className="mt-2" />
-                                </div>
-                            ))
-                            : pageProducts.map((product) => (
-                                <ProductCard
-                                    key={product.id}
-                                    product={product}
-                                    showMenu
-                                />
-                            ))}
+                        {pageProducts.map((product) => (
+                            <ProductCard
+                                key={product.id}
+                                product={product}
+                                showMenu
+                            />
+                        ))}
                     </div>
 
                     <Pagination page={page} pagesCount={pagesCount} onChange={changePage} />

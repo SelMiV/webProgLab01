@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FiChevronUp, FiChevronDown } from "react-icons/fi";
 
-// блок фильтра, который можно свернуть (как на demix.ru)
+// блок фильтра
 function FilterBlock({ title, children }) {
     const [open, setOpen] = useState(true);
 

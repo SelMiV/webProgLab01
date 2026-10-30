@@ -10,7 +10,7 @@ function Cart() {
     const { cart, totalCount, totalPrice, fullPrice, clearCart } = useCart();
     const [ordered, setOrdered] = useState(false);     // заказ оформлен
 
-    // оформление заказа: показываем сообщение и очищаем корзину
+    // после оформления заказа показываем сообщение и очищаем корзину
     function handleOrder() {
         setOrdered(true);
         clearCart();
@@ -67,7 +67,6 @@ function Cart() {
                     </button>
                 </div>
 
-                {/* итого */}
                 <div className="lg:w-[360px] bg-light p-6 self-start lg:sticky lg:top-[120px]">
                     <p className="text-[20px] font-bold mb-4">Ваш заказ</p>
 

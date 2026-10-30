@@ -5,14 +5,14 @@ import { FiX, FiSend } from "react-icons/fi";
 import chatAnswers, { helloMessage, adminMessage } from "./chatAnswers";
 import useLocalStorage from "../../hooks/useLocalStorage";
 
-// текущее время в виде "22:25"
+// текущее время в виде 00:00
 function getTime() {
     return new Date().toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
 }
 
 // чат-бот
-// 1) пользователь нажимает на готовый вопрос - бот сразу отвечает
-// 2) если ответ не подошел, пользователь пишет свой вопрос - бот передает его администратору
+// пользователь нажимает на готовый вопрос бот сразу отвечает
+// если ответ не подошел, пользователь пишет свой вопрос и бот передает его админу
 function ChatBot() {
     const [open, setOpen] = useState(false);
     const [text, setText] = useState("");
@@ -89,8 +89,7 @@ function ChatBot() {
                                 </div>
                             </div>
                         )}
-
-                        {/* готовые вопросы */}
+                        
                         <div className="chatbot__questions">
                             {chatAnswers.map((item) => (
                                 <button
@@ -107,7 +106,6 @@ function ChatBot() {
                         <div ref={bottomRef}></div>
                     </div>
 
-                    {/* поле ввода (без скрепки - файлы прикреплять нельзя) */}
                     <form className="chatbot__form" onSubmit={sendMessage}>
                         <input
                             className="chatbot__input"

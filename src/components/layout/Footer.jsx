@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { FaVk, FaTelegramPlane, FaOdnoklassniki } from "react-icons/fa";
 
-// колонки ссылок в подвале как на demix.ru
 const columns = [
     {
         title: "Покупателям",
@@ -53,7 +52,7 @@ function Footer() {
 
             <div className="border-t border-line">
                 <p className="max-w-[1360px] mx-auto px-4 py-4 text-[13px] text-gray">
-                    © 2026 Demix clone. Учебный проект, не является официальным сайтом.
+                    © 2026 Demix 
                 </p>
             </div>
         </footer>

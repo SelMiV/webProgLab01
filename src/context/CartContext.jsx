@@ -3,13 +3,10 @@ import useLocalStorage from "../hooks/useLocalStorage";
 
 const CartContext = createContext();
 
-// корзина хранится в LocalStorage, поэтому не пропадает после перезагрузки
-// товар в корзине: { product, size, count }
 export function CartProvider({ children }) {
     const [cart, setCart] = useLocalStorage("cart", []);
 
     // одна строка корзины = товар + цвет + размер
-    // (один и тот же товар разных цветов - это разные строки)
     function isSame(item, product, size) {
         return item.product.id === product.id &&
             item.product.specifications.color === product.specifications.color &&

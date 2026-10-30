@@ -7,8 +7,6 @@ import { useCart } from "../../context/CartContext";
 import useHideOnScroll from "../../hooks/useHideOnScroll";
 import { baseProducts } from "../../data/products.js";
 
-// пункты меню как на demix.ru
-// mega - какое большое меню открывать при наведении
 const menu = [
     { title: "МУЖЧИНАМ", link: "/catalog?gender=Мужской", mega: "men" },
     { title: "ЖЕНЩИНАМ", link: "/catalog?gender=Женский", mega: "women" },
@@ -18,8 +16,6 @@ const menu = [
     { title: "АКЦИИ", link: "/catalog?sale=1" },
 ];
 
-// колонки большого меню для мужчин или женщин.
-// категории берем из наших товаров, чтобы в меню было только то, что реально есть
 function makeMenu(gender) {
     const list = baseProducts.filter((p) => p.specifications.gender === gender);
     const clothes = [...new Set(list.filter((p) => p.category !== "Обувь").map((p) => p.category))];
@@ -50,14 +46,13 @@ function makeMenu(gender) {
     ];
 }
 
-// большие меню: колонки + картинка справа (у детей картинки нет, ведут на мужское)
+
 const megaMenus = {
     men: { columns: makeMenu("Мужской"), image: "/banners/menu-m.png", link: "/catalog?gender=Мужской&season=Зима" },
     women: { columns: makeMenu("Женский"), image: "/banners/menu-w.png", link: "/catalog?gender=Женский&season=Зима" },
     kids: { columns: makeMenu("Мужской") },
 };
 
-// большое меню "ВИДЫ СПОРТА": пять видов с картинками и список остальных
 const sportMenu = [
     { title: "СПОРТИВНЫЙ СТИЛЬ", image: "/banners/sport_img_1.jpg" },
     { title: "ТРЕНИНГ", image: "/banners/sport_img_3.png" },
@@ -69,9 +64,9 @@ const otherSports = ["Плавание", "Баскетбол", "Волейбол
 
 function Header() {
     const { totalCount } = useCart();
-    const [menuOpen, setMenuOpen] = useState(false);     // меню на телефоне
-    const [mega, setMega] = useState("");                // какое большое меню открыто: "men", "women", "kids", "sport" или ""
-    const hidden = useHideOnScroll();                    // листаем вниз - шапка уезжает вверх
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [mega, setMega] = useState("");
+    const hidden = useHideOnScroll();
 
     function closeMega() {
         setMega("");
@@ -102,7 +97,6 @@ function Header() {
                         DEMIX
                     </Link>
 
-                    {/* при наведении снизу слева направо выезжает зеленая полоска */}
                     <nav className="hidden lg:flex gap-8 text-[15px] self-stretch">
                         {menu.map((item) => (
                             <Link
@@ -121,7 +115,7 @@ function Header() {
                         ))}
                     </nav>
 
-                    {/* корзина: если в ней что-то есть - зеленый кружок с количеством */}
+                    {/* корзина: если в ней что-то есть зеленый кружок с количеством */}
                     <Link to="/cart" className="relative text-2xl hover:text-demix-dark">
                         <FiShoppingBag />
                         {totalCount > 0 && (
@@ -133,7 +127,7 @@ function Header() {
                 </div>
             </div>
 
-            {/* большое меню для мужчин / женщин / детей (только на компьютере), появляется плавно */}
+            {/* мега меню мужчины женщины*/}
             <AnimatePresence>
                 {megaMenus[mega] && (
                     <motion.div
@@ -148,7 +142,6 @@ function Header() {
                             <div className="flex gap-20">
                                 {megaMenus[mega].columns.map((column) => (
                                     <div key={column.title}>
-                                        {/* заголовок колонки тоже ссылка */}
                                         <Link to={column.link} onClick={closeMega} className="block font-bold mb-4 hover:text-demix-dark">
                                             {column.title}
                                         </Link>
@@ -166,7 +159,6 @@ function Header() {
                                 ))}
                             </div>
 
-                            {/* картинка (надпись и кнопка уже нарисованы на ней) */}
                             {megaMenus[mega].image && (
                                 <Link to={megaMenus[mega].link} onClick={closeMega}>
                                     <img src={megaMenus[mega].image} alt="Зима 2026" className="w-[210px] h-[320px] object-cover" />
@@ -177,7 +169,7 @@ function Header() {
                 )}
             </AnimatePresence>
 
-            {/* большое меню "ВИДЫ СПОРТА" */}
+            {/* мега меню "виды спорта */}
             <AnimatePresence>
                 {mega === "sport" && (
                     <motion.div

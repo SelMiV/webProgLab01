@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
-/* свои стили по БЭМ (то, что неудобно делать классами tailwind) */
+/* свои стили по БЭМ */
 @import "./styles/chatbot.css";
 @import "./styles/filters.css";
 
-/* шрифт как на demix.ru */
+/* шрифт*/
 @font-face {
   font-family: "DINPro";
   src: url("./assets/fonts/dinpro.otf");
@@ -36,7 +36,7 @@
   font-style: italic;
 }
 
-/* цвета взяты из css demix.ru */
+/* цвета */
 @theme {
   --font-sans: "DINPro", "Helvetica Neue", sans-serif;
   --font-logo: "DINPro Condensed", "DINPro", sans-serif;
@@ -56,7 +56,7 @@ body {
   background: white;
 }
 
-/* стрелки и точки слайдера в цветах demix */
+/* цвет стрелки и точки слайдера */
 .swiper-pagination-bullet-active {
   background: var(--color-demix) !important;
 }

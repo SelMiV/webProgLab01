@@ -1,0 +1,72 @@
+/* ползунок цены в фильтре, классы по БЭМ: блок price-range */
+
+.price-range {
+  position: relative;
+  height: 24px;
+}
+
+.price-range__line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #bad532;
+  transform: translateY(-50%);
+}
+
+/* сами ползунки прозрачные, видно только кружки */
+.price-range__input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 24px;
+  margin: 0;
+  appearance: none;
+  background: none;
+  pointer-events: none;
+}
+
+.price-range__input::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #bad532;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.price-range__input::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 50%;
+  background: #bad532;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+/* список сортировки: своя тонкая зеленая полоса прокрутки, блок sort-select */
+
+.sort-select__list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sort-select__list::-webkit-scrollbar-track {
+  background: transparent;
+  margin: 8px 0;
+}
+
+.sort-select__list::-webkit-scrollbar-thumb {
+  background: #bad532;
+}
+
+/* для Firefox (там нет ::-webkit-scrollbar) */
+@supports not selector(::-webkit-scrollbar) {
+  .sort-select__list {
+    scrollbar-width: thin;
+    scrollbar-color: #bad532 transparent;
+  }
+}

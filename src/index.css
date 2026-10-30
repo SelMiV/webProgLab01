@@ -1,5 +1,67 @@
 @import "tailwindcss";
 
+/* свои стили по БЭМ (то, что неудобно делать классами tailwind) */
+@import "./styles/chatbot.css";
+@import "./styles/filters.css";
+
+/* шрифт как на demix.ru */
+@font-face {
+  font-family: "DINPro";
+  src: url("./assets/fonts/dinpro.otf");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "DINPro";
+  src: url("./assets/fonts/dinpro_medium.otf");
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "DINPro";
+  src: url("./assets/fonts/dinpro_bold.otf");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "DINPro";
+  src: url("./assets/fonts/dinpro_black.otf");
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: "DINPro Condensed";
+  src: url("./assets/fonts/dinpro_condensedblackitalic.otf");
+  font-weight: 900;
+  font-style: italic;
+}
+
+/* цвета взяты из css demix.ru */
 @theme {
   --font-sans: "DINPro", "Helvetica Neue", sans-serif;
+  --font-logo: "DINPro Condensed", "DINPro", sans-serif;
+
+  --color-demix: #bad532;
+  --color-demix-hover: #d1de42;
+  --color-demix-dark: #778d1d;
+  --color-text: #333333;
+  --color-gray: #6c6d70;
+  --color-light: #f4f4f4;
+  --color-line: #d6d6d6;
+  --color-sale: #ec001a;
+}
+
+body {
+  color: var(--color-text);
+  background: white;
+}
+
+/* стрелки и точки слайдера в цветах demix */
+.swiper-pagination-bullet-active {
+  background: var(--color-demix) !important;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: white !important;
 }

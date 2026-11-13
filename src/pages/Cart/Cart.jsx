@@ -4,6 +4,7 @@ import { FiShoppingBag, FiCheckCircle } from "react-icons/fi";
 
 import { useCart } from "../../context/CartContext";
 import CartItem from "../../components/cart/CartItem";
+import BackButton from "../../components/ui/BackButton";
 import { formatPrice } from "../../utils/format";
 
 function Cart() {
@@ -34,6 +35,8 @@ function Cart() {
     if (cart.length === 0) {
         return (
             <div>
+                <div className="py-4"><BackButton /></div>
+
                 <div className="flex flex-col items-center text-center py-20">
                     <FiShoppingBag className="text-[80px] text-line" />
                     <h1 className="text-[28px] font-black uppercase mt-6">Корзина пуста</h1>
@@ -51,6 +54,8 @@ function Cart() {
 
     return (
         <div>
+            <div className="py-4"><BackButton /></div>
+
             <div className="flex items-end gap-4">
                 <h1 className="text-[32px] md:text-[40px] font-black uppercase">Корзина</h1>
                 <p className="text-gray mb-2">{totalCount} шт.</p>

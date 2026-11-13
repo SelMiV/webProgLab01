@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useLocation, useParams, useSearchParams } from "react-router-dom";
 import { FiSliders } from "react-icons/fi";
+import { BsGrid, BsGrid3X3GapFill } from "react-icons/bs";
 
 import products from "../../data/products.js"
 import ProductCard from "../../components/product/ProductCard.jsx"
@@ -14,6 +15,7 @@ import PriceFilter from "../../components/catalog/PriceFilter.jsx";
 import PromoBanner from "../../components/catalog/PromoBanner.jsx";
 import { productsWord, getDiscount } from "../../utils/format.js";
 import useHideOnScroll from "../../hooks/useHideOnScroll.js";
+import useLocalStorage from "../../hooks/useLocalStorage.js";
 
 // блоки фильтров с чекбоксами (field - поле товара)
 const filterGroups = [
@@ -71,6 +73,7 @@ function Catalog () {
     const [searchParams, setSearchParams] = useSearchParams();
 
     const [sort, setSort] = useState("popular");
+    const [tiles, setTiles] = useLocalStorage("tiles", 3);
     const headerHidden = useHideOnScroll();             // листаем вниз - полоска с фильтрами прячется вместе с шапкой
 
     // фильтры. Начальные значения берем из адреса (так работают ссылки из меню)
@@ -254,7 +257,19 @@ function Catalog () {
                     {showFilters ? "Скрыть фильтры" : "Показать фильтры"}
                 </button>
 
-                <SortSelect sort={sort} onChange={changeSort} />
+                <div className="flex items-center gap-6">
+                    {/* сколько плиток в ряд: 3 или 4 */}
+                    <div className="flex items-center gap-2 text-[20px]">
+                        <button onClick={() => setTiles(3)} className={tiles === 3 ? "text-text" : "text-line hover:text-gray"}>
+                            <BsGrid />
+                        </button>
+                        <button onClick={() => setTiles(4)} className={tiles === 4 ? "text-text" : "text-line hover:text-gray"}>
+                            <BsGrid3X3GapFill />
+                        </button>
+                    </div>
+
+                    <SortSelect sort={sort} onChange={changeSort} />
+                </div>
             </div>
 
             <div className="flex flex-col lg:flex-row gap-8 mt-4">
@@ -322,8 +337,7 @@ function Catalog () {
                         <p className="text-gray py-10">По этим фильтрам товаров нет.</p>
                     )}
 
-                    {/* всегда 3 столбца, даже когда фильтры скрыты */}
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-8">
+                    <div className={"grid gap-x-4 gap-y-8 " + (tiles === 3 ? "grid-cols-1 md:grid-cols-3" : "grid-cols-2 md:grid-cols-4")}>
                         {pageProducts.map((product) => (
                             <ProductCard
                                 key={product.id}

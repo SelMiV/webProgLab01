@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom"
 import { motion } from "framer-motion";
+import { FiMinus, FiPlus } from "react-icons/fi";
 
 import Rating from "../ui/Rating";
 import { useCart } from "../../context/CartContext";
@@ -17,6 +18,7 @@ function ProductCard({ product, showMenu }) {
     const [size, setSize] = useState(null);       // выбранный размер
     const [error, setError] = useState(false);    // нажали "В корзину" без размера
     const [added, setAdded] = useState(false);
+    const [count, setCount] = useState(1);        // сколько штук положить в корзину
 
     const discount = getDiscount(product.price, product.oldprice);
 
@@ -44,6 +46,7 @@ function ProductCard({ product, showMenu }) {
         setSize(null);
         setError(false);
         setAdded(false);
+        setCount(1);
     }
 
     // пролистывание фоток мышкой
@@ -64,6 +67,12 @@ function ProductCard({ product, showMenu }) {
         setError(false);
     }
 
+    function changeCount(number) {
+        if (number < 1 || number > 10) return;
+        setCount(number);
+        setAdded(false);
+    }
+
     function handleAdd() {
         if (!size) {
             setError(true);
@@ -75,7 +84,7 @@ function ProductCard({ product, showMenu }) {
             colorIndex: color,
             images: allColors[color].images,
             specifications: { ...product.specifications, color: allColors[color].name }
-        }, size);
+        }, size, count);
         setAdded(true);
     }
 
@@ -170,12 +179,33 @@ function ProductCard({ product, showMenu }) {
 
                         {error && <p className="text-sale text-[13px] mt-2">Выберите размер</p>}
 
-                        <button
-                            onClick={handleAdd}
-                            className="w-full mt-4 py-3 rounded-full bg-demix hover:bg-demix-hover font-bold uppercase text-[14px] transition"
-                        >
-                            {added ? "Добавлено" : "В корзину"}
-                        </button>
+                        <div className="flex gap-3 mt-4">
+                            {/* количество */}
+                            <div className="flex items-center border border-line rounded-full">
+                                <button
+                                    className="w-9 h-full flex items-center justify-center disabled:opacity-30"
+                                    disabled={count === 1}
+                                    onClick={() => changeCount(count - 1)}
+                                >
+                                    <FiMinus />
+                                </button>
+                                <span className="w-6 text-center font-bold">{count}</span>
+                                <button
+                                    className="w-9 h-full flex items-center justify-center disabled:opacity-30"
+                                    disabled={count === 10}
+                                    onClick={() => changeCount(count + 1)}
+                                >
+                                    <FiPlus />
+                                </button>
+                            </div>
+
+                            <button
+                                onClick={handleAdd}
+                                className="flex-1 py-3 rounded-full bg-demix hover:bg-demix-hover font-bold uppercase text-[14px] transition"
+                            >
+                                {added ? "Добавлено" : "В корзину"}
+                            </button>
+                        </div>
                     </div>
                 )}
             </div>

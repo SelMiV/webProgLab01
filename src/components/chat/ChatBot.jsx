@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { BsChatDotsFill } from "react-icons/bs";
 import { FiX, FiSend } from "react-icons/fi";
 
-import chatAnswers, { helloMessage, adminMessage } from "./chatAnswers";
+import chatAnswers, { findAnswers, helloMessage, adminMessage } from "./chatAnswers";
 import useLocalStorage from "../../hooks/useLocalStorage";
 
 // текущее время в виде 00:00
@@ -12,7 +12,7 @@ function getTime() {
 
 // чат-бот
 // пользователь нажимает на готовый вопрос бот сразу отвечает
-// если ответ не подошел, пользователь пишет свой вопрос и бот передает его админу
+// если пишет свой вопрос, бот ищет в нем знакомые слова, а если не нашел передает админу
 function ChatBot() {
     const [open, setOpen] = useState(false);
     const [text, setText] = useState("");
@@ -32,17 +32,19 @@ function ChatBot() {
     }, [messages, typing, open]);
 
     // бот отвечает с небольшой задержкой, как будто печатает
-    function botReply(answer) {
+    // answers - список ответов, каждый отдельным сообщением
+    function botReply(answers) {
         setTyping(true);
         setTimeout(() => {
-            setMessages((old) => [...old, { from: "bot", text: answer, time: getTime() }]);
+            const botMessages = answers.map((answer) => ({ from: "bot", text: answer, time: getTime() }));
+            setMessages((old) => [...old, ...botMessages]);
             setTyping(false);
         }, 800);
     }
 
     function askQuestion(item) {
         setMessages((old) => [...old, { from: "user", text: item.question, time: getTime() }]);
-        botReply(item.answer);
+        botReply([item.answer]);
     }
 
     function sendMessage(e) {
@@ -51,7 +53,10 @@ function ChatBot() {
 
         setMessages((old) => [...old, { from: "user", text: text, time: getTime() }]);
         setText("");
-        botReply(adminMessage);
+
+        // если нашел знакомые слова отвечает сам, если нет передает админу
+        const answers = findAnswers(text);
+        botReply(answers.length > 0 ? answers : [adminMessage]);
     }
 
     return (

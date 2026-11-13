@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom";
 
+import BackButton from "./BackButton";
+
 // хлебные крошки
 function Breadcrumbs({ items }) {
     return (
         <nav className="flex flex-wrap items-center gap-2 text-[13px] text-gray py-4">
+            <span className="mr-4"><BackButton /></span>
             <Link to="/" className="hover:text-text">Главная</Link>
 
             {items.map((item) => (

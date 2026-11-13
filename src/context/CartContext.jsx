@@ -13,14 +13,14 @@ export function CartProvider({ children }) {
             item.size === size;
     }
 
-    function addToCart(product, size) {
+    function addToCart(product, size, count = 1) {
         const item = cart.find((item) => isSame(item, product, size));
 
         if (item) {
-            // такой товар такого цвета и размера уже есть - увеличиваем количество
-            changeCount(product, size, item.count + 1);
+            // такой товар такого цвета и размера уже есть - увеличиваем количество (не больше 10)
+            changeCount(product, size, Math.min(item.count + count, 10));
         } else {
-            setCart([...cart, { product: product, size: size, count: 1 }]);
+            setCart([...cart, { product: product, size: size, count: count }]);
         }
     }
 

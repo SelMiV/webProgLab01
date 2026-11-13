@@ -142,7 +142,6 @@ function Catalog () {
 
     // 2. сортируем (делаем копию, чтобы не менять исходный массив)
     // "по популярности" - оставляем порядок как в списке товаров,
-    // иначе одинаковые копии товара встанут подряд
     list = [...list];
     if (sort === "cheap") list.sort((a, b) => a.price - b.price);
     if (sort === "expensive") list.sort((a, b) => b.price - a.price);

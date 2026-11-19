@@ -45,7 +45,7 @@ function ChatBot({ open, setOpen }) {
     }, [messages, typing, open]);
 
     // бот отвечает с небольшой задержкой, как будто печатает
-    // answers - список ответов, каждый отдельным сообщением
+    // answers список ответов, каждый отдельным сообщением
     function botReply(answers) {
         setTyping(true);
         setTimeout(() => {

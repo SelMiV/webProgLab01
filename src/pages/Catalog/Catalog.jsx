@@ -250,7 +250,7 @@ function Catalog () {
             {/* полоска "Скрыть фильтры" и сортировка - прилипает под шапкой,
                 листаем вниз - уезжает вверх вместе с шапкой, вверх - выезжает обратно */}
             <div className={"sticky z-30 bg-white flex justify-between items-center py-3 mt-4 transition-all duration-300 " +
-                (headerHidden ? "top-0 -translate-y-full" : "top-[60px] md:top-[100px]")}>
+                (headerHidden ? "-top-[80px]" : "top-[60px] md:top-[100px]")}>
                 <button onClick={() => setShowFilters(!showFilters)} className="flex items-center gap-2 font-bold text-[15px]">
                     <FiSliders className="text-[20px]" />
                     {showFilters ? "Скрыть фильтры" : "Показать фильтры"}
@@ -258,7 +258,7 @@ function Catalog () {
 
                 <div className="flex items-center gap-6">
                     {/* сколько плиток в ряд: 3 или 4 */}
-                    <div className="flex items-center gap-2 text-[20px]">
+                    <div className="hidden md:flex items-center gap-2 text-[20px]">
                         <button onClick={() => setTiles(3)} className={tiles === 3 ? "text-text" : "text-line hover:text-gray"}>
                             <BsGrid />
                         </button>
@@ -336,7 +336,7 @@ function Catalog () {
                         <p className="text-gray py-10">По этим фильтрам товаров нет.</p>
                     )}
 
-                    <div className={"grid gap-x-4 gap-y-8 " + (tiles === 3 ? "grid-cols-1 md:grid-cols-3" : "grid-cols-2 md:grid-cols-4")}>
+                    <div className={"grid gap-x-4 gap-y-8 " + (tiles === 3 ? "grid-cols-2 md:grid-cols-3" : "grid-cols-2 md:grid-cols-4")}>
                         {pageProducts.map((product) => (
                             <ProductCard
                                 key={product.id}

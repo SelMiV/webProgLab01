@@ -13,8 +13,8 @@ function getTime() {
 // чат-бот
 // пользователь нажимает на готовый вопрос бот сразу отвечает
 // если пишет свой вопрос, бот ищет в нем знакомые слова, а если не нашел передает админу
-function ChatBot() {
-    const [open, setOpen] = useState(false);
+// open и setOpen приходят из Layout (чат открывается и из нижнего меню)
+function ChatBot({ open, setOpen }) {
     const [text, setText] = useState("");
     const [typing, setTyping] = useState(false);
     // история сообщений сохраняется, чтобы не пропадала при переходе по страницам
@@ -23,6 +23,19 @@ function ChatBot() {
     ]);
 
     const bottomRef = useRef(null);
+    const chatRef = useRef(null);
+
+    // на телефоне клик мимо чата - закрываем
+    useEffect(() => {
+        function clickOutside(e) {
+            if (!open || window.innerWidth >= 1024) return;
+            if (chatRef.current.contains(e.target) || e.target.closest(".chat-tab")) return;
+            setOpen(false);
+        }
+
+        document.addEventListener("mousedown", clickOutside);
+        return () => document.removeEventListener("mousedown", clickOutside);
+    }, [open, setOpen]);
 
     // прокрутка вниз при новом сообщении
     useEffect(() => {
@@ -60,7 +73,7 @@ function ChatBot() {
     }
 
     return (
-        <div className="chatbot">
+        <div className="chatbot" ref={chatRef}>
             {open && (
                 <div className="chatbot__window">
                     <div className="chatbot__header">

@@ -110,11 +110,7 @@ function Product() {
                     <h1 className="text-[26px] font-bold leading-tight">{product.name}</h1>
 
                     <div className="flex items-center gap-4">
-                        {product.reviews > 0 ? (
-                            <Rating rating={product.rating} reviews={product.reviews} />
-                        ) : (
-                            <p className="text-gray text-[13px]">Нет отзывов</p>
-                        )}
+                        <Rating rating={product.rating} reviews={product.reviews} />
                         <p className="text-gray text-[13px]">Артикул: {String(product.id).padStart(6, "0")}</p>
                     </div>
 

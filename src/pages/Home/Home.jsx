@@ -187,7 +187,7 @@ function Home() {
             {/* новая коллекция зимней одежды */}
             <motion.section {...fadeUp} className="mt-16">
                 {/* большой баннер с параллаксом */}
-                <Link to="/catalog?season=Зима" ref={parallaxRef} className="relative block overflow-hidden aspect-[17/4] min-h-[160px]">
+                <Link to="/catalog?season=Зима" ref={parallaxRef} className="relative block overflow-hidden aspect-[17/4]">
                     <motion.img
                         src="/banners/banner-new-collection-winter-dv.webp"
                         alt="Новая коллекция зимней одежды"

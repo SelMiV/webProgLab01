@@ -17,7 +17,7 @@ export function CartProvider({ children }) {
         const item = cart.find((item) => isSame(item, product, size));
 
         if (item) {
-            // такой товар такого цвета и размера уже есть - увеличиваем количество (не больше 10)
+            // такой товар такого цвета и размера уже есть увеличиваем количество
             changeCount(product, size, Math.min(item.count + count, 10));
         } else {
             setCart([...cart, { product: product, size: size, count: count }]);

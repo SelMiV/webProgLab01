@@ -6,7 +6,7 @@ import BackButton from "./BackButton";
 function Breadcrumbs({ items }) {
     return (
         <nav className="flex flex-wrap items-center gap-2 text-[13px] text-gray py-4">
-            <span className="mr-4"><BackButton /></span>
+            <span className="hidden lg:block mr-4"><BackButton /></span>
             <Link to="/" className="hover:text-text">Главная</Link>
 
             {items.map((item) => (

@@ -200,3 +200,14 @@
     height: 70vh;
   }
 }
+
+/* на телефоне круглой кнопки нет, чат открывается из нижнего меню */
+@media (max-width: 1023px) {
+  .chatbot {
+    bottom: 60px;
+  }
+
+  .chatbot__button {
+    display: none;
+  }
+}

@@ -15,7 +15,7 @@ function BackButton() {
     }
 
     return (
-        <button onClick={goBack} className="flex items-center gap-1 text-[13px] text-text hover:text-demix-dark">
+        <button onClick={goBack} className="flex items-center gap-2 bg-light hover:bg-line rounded-full px-4 py-2 text-[14px] font-bold text-text">
             <FiArrowLeft /> Назад
         </button>
     )

@@ -35,7 +35,7 @@ function Cart() {
     if (cart.length === 0) {
         return (
             <div>
-                <div className="py-4"><BackButton /></div>
+                <div className="hidden lg:block py-4"><BackButton /></div>
 
                 <div className="flex flex-col items-center text-center py-20">
                     <FiShoppingBag className="text-[80px] text-line" />
@@ -54,9 +54,9 @@ function Cart() {
 
     return (
         <div>
-            <div className="py-4"><BackButton /></div>
+            <div className="hidden lg:block py-4"><BackButton /></div>
 
-            <div className="flex items-end gap-4">
+            <div className="flex items-end gap-4 pt-4 lg:pt-0">
                 <h1 className="text-[32px] md:text-[40px] font-black uppercase">Корзина</h1>
                 <p className="text-gray mb-2">{totalCount} шт.</p>
             </div>
@@ -72,7 +72,7 @@ function Cart() {
                     </button>
                 </div>
 
-                <div className="lg:w-[360px] bg-light p-6 self-start lg:sticky lg:top-[120px]">
+                <div className="w-full lg:w-[360px] bg-light p-6 lg:self-start lg:sticky lg:top-[120px]">
                     <p className="text-[20px] font-bold mb-4">Ваш заказ</p>
 
                     <div className="flex justify-between text-[14px] mb-2">
@@ -92,7 +92,7 @@ function Cart() {
                         <span>{delivery === 0 ? "бесплатно" : formatPrice(delivery)}</span>
                     </div>
 
-                    <div className="flex justify-between text-[22px] font-bold border-t border-line pt-4">
+                    <div className="flex justify-between gap-4 text-[22px] font-bold border-t border-line pt-4">
                         <span>Итого</span>
                         <span>{formatPrice(totalPrice + delivery)}</span>
                     </div>

@@ -1,20 +1,12 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { FiShoppingBag, FiMenu, FiX } from "react-icons/fi";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FiShoppingBag, FiArrowLeft } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { useCart } from "../../context/CartContext";
 import useHideOnScroll from "../../hooks/useHideOnScroll";
 import { baseProducts } from "../../data/products.js";
-
-const menu = [
-    { title: "МУЖЧИНАМ", link: "/catalog?gender=Мужской", mega: "men" },
-    { title: "ЖЕНЩИНАМ", link: "/catalog?gender=Женский", mega: "women" },
-    { title: "ДЕТЯМ", link: "/catalog?gender=Мужской", mega: "kids" },
-    { title: "ВИДЫ СПОРТА", link: "/catalog", mega: "sport" },
-    { title: "СКИДКИ", link: "/catalog?sale=1", red: true },
-    { title: "АКЦИИ", link: "/catalog?sale=1" },
-];
+import menu from "../../data/menu.js";
 
 function makeMenu(gender) {
     const list = baseProducts.filter((p) => p.specifications.gender === gender);
@@ -64,9 +56,19 @@ const otherSports = ["Плавание", "Баскетбол", "Волейбол
 
 function Header() {
     const { totalCount } = useCart();
-    const [menuOpen, setMenuOpen] = useState(false);
     const [mega, setMega] = useState("");
     const hidden = useHideOnScroll();
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    // кнопка назад на телефоне
+    function goBack() {
+        if (window.history.state && window.history.state.idx > 0) {
+            navigate(-1);
+        } else {
+            navigate("/");
+        }
+    }
 
     function closeMega() {
         setMega("");
@@ -88,12 +90,18 @@ function Header() {
 
             <div className="border-t border-b border-line">
                 <div className="flex flex-row justify-between items-center max-w-[1360px] h-[60px] mx-auto px-4">
-                    {/* кнопка меню на телефоне */}
-                    <button className="lg:hidden text-2xl" onClick={() => setMenuOpen(!menuOpen)}>
-                        {menuOpen ? <FiX /> : <FiMenu />}
-                    </button>
+                    {/* на телефоне стрелка назад вместо логотипа */}
+                    {location.pathname !== "/" && (
+                        <button onClick={goBack} title="Назад" className="lg:hidden text-2xl">
+                            <FiArrowLeft />
+                        </button>
+                    )}
 
-                    <Link to="/" className="font-logo italic font-black text-3xl tracking-tight hover:text-demix-dark">
+                    <Link
+                        to="/"
+                        className={"font-logo italic font-black text-3xl tracking-tight hover:text-demix-dark " +
+                            (location.pathname !== "/" ? "hidden lg:block" : "")}
+                    >
                         DEMIX
                     </Link>
 
@@ -116,7 +124,7 @@ function Header() {
                     </nav>
 
                     {/* корзина: если в ней что-то есть зеленый кружок с количеством */}
-                    <Link to="/cart" className="relative text-2xl hover:text-demix-dark">
+                    <Link to="/cart" className="relative text-2xl hover:text-demix-dark hidden lg:block">
                         <FiShoppingBag />
                         {totalCount > 0 && (
                             <span className="absolute -top-2 -right-2 bg-demix text-text text-[11px] font-bold w-5 h-5 rounded-full flex items-center justify-center">
@@ -203,22 +211,6 @@ function Header() {
                     </motion.div>
                 )}
             </AnimatePresence>
-
-            {/* меню на телефоне */}
-            {menuOpen && (
-                <nav className="lg:hidden flex flex-col bg-white border-b border-line px-4 py-2">
-                    {menu.map((item) => (
-                        <Link
-                            key={item.title}
-                            to={item.link}
-                            onClick={() => setMenuOpen(false)}
-                            className={"py-3 border-b border-light " + (item.red ? "text-sale" : "")}
-                        >
-                            {item.title}
-                        </Link>
-                    ))}
-                </nav>
-            )}
 
         </header>
     )

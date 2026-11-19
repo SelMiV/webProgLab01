@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { Link } from "react-router-dom"
-import { motion } from "framer-motion";
+import { createPortal } from "react-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import { FiMinus, FiPlus } from "react-icons/fi";
 
 import Rating from "../ui/Rating";
@@ -9,7 +10,7 @@ import { formatPrice, getDiscount } from "../../utils/format";
 
 // карточка товара
 function ProductCard({ product, showMenu }) {
-    const { addToCart } = useCart();
+    const { cart, addToCart } = useCart();
     const cardRef = useRef(null);
     const [height, setHeight] = useState(0);      // высота карточки, чтобы соседние не сдвигались
     const [hover, setHover] = useState(false);
@@ -19,6 +20,7 @@ function ProductCard({ product, showMenu }) {
     const [error, setError] = useState(false);    // нажали "В корзину" без размера
     const [added, setAdded] = useState(false);
     const [count, setCount] = useState(1);        // сколько штук положить в корзину
+    const [opened, setOpened] = useState(false);  // открыта шторка (телефон)
 
     const discount = getDiscount(product.price, product.oldprice);
 
@@ -32,6 +34,9 @@ function ProductCard({ product, showMenu }) {
     // ссылка на страницу товара сразу с выбранным цветом 
     const link = color > 0 ? `/product/${product.id}?color=${color}` : `/product/${product.id}`;
     const menuOpen = showMenu && hover;
+
+    // товар уже в корзине
+    const inCart = cart.some((item) => item.product.id === product.id);
 
     function handleEnter() {
         if (window.innerWidth >= 768) {
@@ -73,6 +78,15 @@ function ProductCard({ product, showMenu }) {
         setAdded(false);
     }
 
+    // закрываем шторку и сбрасываем выбор
+    function closeSheet() {
+        setOpened(false);
+        setSize(null);
+        setError(false);
+        setAdded(false);
+        setCount(1);
+    }
+
     function handleAdd() {
         if (!size) {
             setError(true);
@@ -86,6 +100,10 @@ function ProductCard({ product, showMenu }) {
             specifications: { ...product.specifications, color: allColors[color].name }
         }, size, count);
         setAdded(true);
+
+        if (opened) {
+            setTimeout(closeSheet, 700);
+        }
     }
 
     return (
@@ -94,14 +112,14 @@ function ProductCard({ product, showMenu }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
             ref={cardRef}
-            className={"relative " + (menuOpen ? "z-20" : "")}
+            className={"relative h-full " + (menuOpen ? "z-20" : "")}
             style={menuOpen ? { height: height } : {}}
             onMouseEnter={handleEnter}
             onMouseLeave={handleLeave}
         >
             <div
                 className={"flex flex-col " +
-                    (menuOpen ? "absolute -top-3 -left-3 -right-3 p-3 bg-white shadow-[0_0_20px_rgba(0,0,0,0.15)]" : "")}
+                    (menuOpen ? "absolute -top-3 -left-3 -right-3 p-3 bg-white shadow-[0_0_20px_rgba(0,0,0,0.15)]" : "h-full")}
             >
                 <div className="relative bg-light overflow-hidden" onMouseMove={handleMove}>
                     <Link to={link}>
@@ -129,23 +147,34 @@ function ProductCard({ product, showMenu }) {
                     {product.name}
                 </Link>
 
-                {product.reviews > 0 && (
+                {/* рейтинг и цена внизу карточки */}
+                <div className="mt-auto">
                     <div className="mt-1">
                         <Rating rating={product.rating} reviews={product.reviews} />
                     </div>
-                )}
 
-                <div className="flex items-center gap-2 mt-2">
-                    <p className={"font-bold text-[18px] " + (discount > 0 ? "text-sale" : "")}>
-                        {formatPrice(product.price)}
-                    </p>
-                    {discount > 0 && (
-                        <>
-                            <p className="text-gray line-through text-[14px]">{formatPrice(product.oldprice)}</p>
-                            <span className="border border-sale text-sale text-[12px] font-bold px-1">-{discount}%</span>
-                        </>
-                    )}
+                    <div className="flex items-center flex-wrap gap-2 mt-2 mb-3 md:mb-0">
+                        <p className={"font-bold text-[18px] " + (discount > 0 ? "text-sale" : "")}>
+                            {formatPrice(product.price)}
+                        </p>
+                        {discount > 0 && (
+                            <>
+                                <p className="text-gray line-through text-[14px]">{formatPrice(product.oldprice)}</p>
+                                <span className="border border-sale text-sale text-[12px] font-bold px-1">-{discount}%</span>
+                            </>
+                        )}
+                    </div>
                 </div>
+
+                {/* на телефоне кнопка открывает шторку */}
+                {showMenu && (
+                    <button
+                        onClick={() => setOpened(true)}
+                        className={"md:hidden py-2 rounded-full font-bold uppercase text-[13px] " + (inCart ? "bg-text text-white" : "bg-demix")}
+                    >
+                        {inCart ? "В корзине" : "В корзину"}
+                    </button>
+                )}
 
                 {/* меню при наведении размеры и кнопка в корзину*/}
                 {menuOpen && (
@@ -201,7 +230,7 @@ function ProductCard({ product, showMenu }) {
 
                             <button
                                 onClick={handleAdd}
-                                className="flex-1 py-3 rounded-full bg-demix hover:bg-demix-hover font-bold uppercase text-[14px] transition"
+                                className="flex-1 py-3 rounded-full bg-demix hover:bg-demix-hover font-bold uppercase text-[12px] md:text-[14px] transition"
                             >
                                 {added ? "Добавлено" : "В корзину"}
                             </button>
@@ -209,6 +238,92 @@ function ProductCard({ product, showMenu }) {
                     </div>
                 )}
             </div>
+
+            {/* шторка снизу на телефоне (createPortal - рисуем в конце body, поверх всего) */}
+            {createPortal(
+                <AnimatePresence>
+                    {opened && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.25 }}
+                            className="md:hidden fixed inset-0 z-[70] bg-black/40 flex items-end"
+                            onClick={(e) => { if (e.target === e.currentTarget) closeSheet(); }}
+                        >
+                            <motion.div
+                                initial={{ y: "100%" }}
+                                animate={{ y: 0 }}
+                                exit={{ y: "100%" }}
+                                transition={{ duration: 0.25 }}
+                                className="w-full bg-white rounded-t-2xl px-4 pt-5 pb-6"
+                            >
+                                <p className="font-bold text-[18px] mb-4">{product.name}</p>
+
+                                {/* цвет */}
+                                {allColors.length > 1 && (
+                                    <>
+                                        <p className="text-[14px] mb-2">Цвет: <span className="text-gray">{allColors[color].name}</span></p>
+                                        <div className="flex gap-2 mb-4">
+                                            {allColors.map((c, index) => (
+                                                <button
+                                                    key={c.name}
+                                                    onClick={() => chooseColor(index)}
+                                                    className={"border-2 " + (index === color ? "border-demix" : "border-transparent")}
+                                                >
+                                                    <img src={c.images[0]} alt={c.name} className="w-14 h-[74px] object-cover bg-light" />
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </>
+                                )}
+
+                                {/* размер */}
+                                <p className="text-[14px] mb-2">Размер</p>
+                                <div className="grid grid-cols-4 gap-2">
+                                    {product.sizes.map((s) => (
+                                        <button
+                                            key={s}
+                                            onClick={() => chooseSize(s)}
+                                            className={"h-11 border rounded text-[14px] " + (size === s ? "border-text bg-text text-white" : "border-line")}
+                                        >
+                                            {s}
+                                        </button>
+                                    ))}
+                                </div>
+
+                                {error && <p className="text-sale text-[13px] mt-2">Выберите размер</p>}
+
+                                <div className="flex gap-3 mt-5">
+                                    {/* количество */}
+                                    <div className="flex items-center border border-line rounded-full">
+                                        <button
+                                            className="w-11 h-full flex items-center justify-center disabled:opacity-30"
+                                            disabled={count === 1}
+                                            onClick={() => changeCount(count - 1)}
+                                        >
+                                            <FiMinus />
+                                        </button>
+                                        <span className="w-6 text-center font-bold">{count}</span>
+                                        <button
+                                            className="w-11 h-full flex items-center justify-center disabled:opacity-30"
+                                            disabled={count === 10}
+                                            onClick={() => changeCount(count + 1)}
+                                        >
+                                            <FiPlus />
+                                        </button>
+                                    </div>
+
+                                    <button onClick={handleAdd} className="flex-1 py-4 rounded-full bg-demix font-bold uppercase">
+                                        {added ? "Добавлено" : "В корзину"}
+                                    </button>
+                                </div>
+                            </motion.div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>,
+                document.body
+            )}
         </motion.div>
     )
 }

@@ -6,18 +6,16 @@ const CartContext = createContext();
 export function CartProvider({ children }) {
     const [cart, setCart] = useLocalStorage("cart", []);
 
-    // одна строка корзины = товар + цвет + размер
+    // одна строка корзины = товар + размер
     function isSame(item, product, size) {
-        return item.product.id === product.id &&
-            item.product.specifications.color === product.specifications.color &&
-            item.size === size;
+        return item.product.id === product.id && item.size === size;
     }
 
     function addToCart(product, size, count = 1) {
         const item = cart.find((item) => isSame(item, product, size));
 
         if (item) {
-            // такой товар такого цвета и размера уже есть увеличиваем количество
+            // такой товар такого размера уже есть увеличиваем количество
             changeCount(product, size, Math.min(item.count + count, 10));
         } else {
             setCart([...cart, { product: product, size: size, count: count }]);
@@ -46,9 +44,6 @@ export function CartProvider({ children }) {
     // сумма к оплате
     const totalPrice = cart.reduce((sum, item) => sum + item.product.price * item.count, 0);
 
-    // сумма без скидок
-    const fullPrice = cart.reduce((sum, item) => sum + (item.product.oldprice || item.product.price) * item.count, 0);
-
     return (
         <CartContext.Provider value={{
             cart,
@@ -57,8 +52,7 @@ export function CartProvider({ children }) {
             removeFromCart,
             clearCart,
             totalCount,
-            totalPrice,
-            fullPrice
+            totalPrice
         }}>
             {children}
         </CartContext.Provider>

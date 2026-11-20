@@ -15,7 +15,6 @@ const baseProducts = [
         fabric: "Текстиль",
 
         price: 5499,
-        oldprice: 0,
 
         rating: 4.8,
         reviews: 36,
@@ -28,20 +27,6 @@ const baseProducts = [
             "/products/1/4.jpg",
             "/products/1/5.jpg",
             "/products/1/6.jpg"
-        ],
-
-        colors: [
-            {
-                name: "болотный",
-                images: [
-                    "/products/1-bolotny/1.jpg",
-                    "/products/1-bolotny/2.jpg",
-                    "/products/1-bolotny/3.jpg",
-                    "/products/1-bolotny/4.jpg",
-                    "/products/1-bolotny/5.jpg",
-                    "/products/1-bolotny/6.jpg"
-                ]
-            }
         ],
 
         description: descriptions.shoes,
@@ -69,7 +54,6 @@ const baseProducts = [
         fabric: "Текстиль",
 
         price: 5999,
-        oldprice: 0,
 
         rating: 4.6,
         reviews: 4,
@@ -87,21 +71,6 @@ const baseProducts = [
             "/products/2/9.jpg",
             "/products/2/10.jpg",
             "/products/2/11.jpg"
-        ],
-
-        colors: [
-            {
-                name: "ореховый",
-                images: [
-                    "/products/2-orehovyj/1.jpg"
-                ]
-            },
-            {
-                name: "зеленый",
-                images: [
-                    "/products/2-zelenyj/1.jpg"
-                ]
-            }
         ],
 
         description: descriptions.jackets,
@@ -130,7 +99,6 @@ const baseProducts = [
         fabric: "Трикотаж",
 
         price: 3499,
-        oldprice: 0,
 
         rating: 4.9,
         reviews: 4,
@@ -143,15 +111,6 @@ const baseProducts = [
             "/products/3/4.jpg",
             "/products/3/5.jpg",
             "/products/3/6.jpg"
-        ],
-
-        colors: [
-            {
-                name: "темно-серый",
-                images: [
-                    "/products/3-temno-seryj/1.jpg"
-                ]
-            }
         ],
 
         description: descriptions.pants,
@@ -179,7 +138,6 @@ const baseProducts = [
         fabric: "Трикотаж",
 
         price: 2499,
-        oldprice: 0,
 
         rating: 4.7,
         reviews: 16,
@@ -218,7 +176,6 @@ const baseProducts = [
         fabric: "Текстиль",
 
         price: 6999,
-        oldprice: 0,
 
         rating: 4.8,
         reviews: 17,
@@ -258,7 +215,6 @@ const baseProducts = [
         fabric: "Флис",
 
         price: 1999,
-        oldprice: 0,
 
         rating: 5,
         reviews: 28,
@@ -297,7 +253,6 @@ const baseProducts = [
         fabric: "Флис",
 
         price: 3999,
-        oldprice: 0,
 
         rating: 4.9,
         reviews: 1,
@@ -337,7 +292,6 @@ const baseProducts = [
         fabric: "Текстиль",
 
         price: 11999,
-        oldprice: 14999,
 
         rating: 0,
         reviews: 0,
@@ -350,20 +304,6 @@ const baseProducts = [
             "/products/15/4.jpg",
             "/products/15/5.jpg",
             "/products/15/6.jpg"
-        ],
-
-        colors: [
-            {
-                name: "темно-серый",
-                images: [
-                    "/products/15-temno-seryj/1.jpg",
-                    "/products/15-temno-seryj/2.jpg",
-                    "/products/15-temno-seryj/3.jpg",
-                    "/products/15-temno-seryj/4.jpg",
-                    "/products/15-temno-seryj/5.jpg",
-                    "/products/15-temno-seryj/6.jpg"
-                ]
-            }
         ],
 
         description: descriptions.jackets,
@@ -391,7 +331,6 @@ const baseProducts = [
         fabric: "Текстиль",
 
         price: 7999,
-        oldprice: 9999,
 
         rating: 4.9,
         reviews: 22,
@@ -404,15 +343,6 @@ const baseProducts = [
             "/products/18/4.jpg",
             "/products/18/5.jpg",
             "/products/18/6.jpg"
-        ],
-
-        colors: [
-            {
-                name: "черный",
-                images: [
-                    "/products/18-chernyj/1.jpg"
-                ]
-            }
         ],
 
         description: descriptions.jackets,
@@ -440,7 +370,6 @@ const baseProducts = [
         fabric: "Текстиль",
 
         price: 8999,
-        oldprice: 0,
 
         rating: 5,
         reviews: 49,
@@ -483,7 +412,6 @@ const baseProducts = [
         fabric: "Текстиль",
 
         price: 7199,
-        oldprice: 8999,
 
         rating: 4.8,
         reviews: 5,
@@ -523,7 +451,6 @@ const baseProducts = [
         fabric: "Текстиль",
 
         price: 4999,
-        oldprice: 0,
 
         rating: 5,
         reviews: 1,
@@ -563,7 +490,6 @@ const baseProducts = [
         fabric: "Текстиль",
 
         price: 7999,
-        oldprice: 0,
 
         rating: 0,
         reviews: 0,
@@ -603,7 +529,6 @@ const baseProducts = [
         fabric: "Текстиль",
 
         price: 9999,
-        oldprice: 0,
 
         rating: 0,
         reviews: 0,
@@ -643,7 +568,6 @@ const baseProducts = [
         fabric: "Текстиль",
 
         price: 11199,
-        oldprice: 13999,
 
         rating: 5,
         reviews: 1,

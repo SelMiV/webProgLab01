@@ -32,7 +32,6 @@ function makeMenu(gender) {
             link: `/catalog?gender=${gender}`,
             links: [
                 { title: "Все товары", link: `/catalog?gender=${gender}` },
-                { title: "Скидки", link: `/catalog?gender=${gender}&sale=1` },
             ],
         },
     ];
@@ -79,15 +78,6 @@ function Header() {
             className={"bg-white text-text font-medium sticky top-0 z-40 transition-transform duration-300 " + (hidden ? "-translate-y-full" : "")}
             onMouseLeave={closeMega}
         >
-            {/* верхняя полоска */}
-            <div className="hidden md:block">
-                <div className="flex flex-row justify-end gap-6 h-[40px] items-center text-[14px] max-w-[1360px] mx-auto px-4">
-                    <a href="tel:88007777757" className="hover:text-demix-dark">
-                        8 (800) 777-77-57 <span className="bg-light text-demix-dark text-[12px] px-1">24/7</span>
-                    </a>
-                </div>
-            </div>
-
             <div className="border-t border-b border-line">
                 <div className="flex flex-row justify-between items-center max-w-[1360px] h-[60px] mx-auto px-4">
                     {/* на телефоне стрелка назад вместо логотипа */}
@@ -112,7 +102,7 @@ function Header() {
                                 to={item.link}
                                 onMouseEnter={() => setMega(item.mega || "")}
                                 onClick={closeMega}
-                                className={"relative flex items-center group " + (item.red ? "text-sale" : "")}
+                                className="relative flex items-center group"
                             >
                                 {item.title}
                                 <span

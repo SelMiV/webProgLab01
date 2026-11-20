@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useParams, useSearchParams } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import { FiTruck, FiRefreshCw, FiChevronDown } from "react-icons/fi";
@@ -10,7 +10,7 @@ import Rating from "../../components/ui/Rating.jsx";
 import SizeSelect from "../../components/product/SizeSelect.jsx";
 import ProductCard from "../../components/product/ProductCard.jsx";
 import { useCart } from "../../context/CartContext.jsx";
-import { formatPrice, getDiscount } from "../../utils/format.js";
+import { formatPrice } from "../../utils/format.js";
 
 // названия характеристик на русском
 const specNames = {
@@ -24,7 +24,6 @@ const specNames = {
 function Product() {
         const { id } = useParams();
         const product = products.find((product) => product.id === Number(id));
-        const [searchParams, setSearchParams] = useSearchParams();
 
         const { addToCart } = useCart();
         const [size, setSize] = useState(null);
@@ -41,15 +40,7 @@ function Product() {
             )
         }
 
-        const discount = getDiscount(product.price, product.oldprice);
-
-        // все цвета товара: основной + другие (если есть)
-        const allColors = [{ name: product.specifications.color, images: product.images }];
-        if (product.colors) allColors.push(...product.colors);
-
-        let color = Number(searchParams.get("color")) || 0;
-        if (color >= allColors.length) color = 0;
-        const images = allColors[color].images;
+        const images = product.images;
 
         // похожие товары - той же категории
         // берем товары без повторов, того же пола, и убираем этот же товар
@@ -64,12 +55,7 @@ function Product() {
                 setError(true);
                 return;
             }
-            addToCart({
-                ...product,
-                colorIndex: color,
-                images: images,
-                specifications: { ...product.specifications, color: allColors[color].name }
-            }, size);
+            addToCart(product, size);
             setAdded(true);
         }
 
@@ -106,7 +92,7 @@ function Product() {
                     </Swiper>
                 </div>
 
-                <div className="lg:w-[40%] lg:sticky lg:top-[120px] self-start flex flex-col gap-5">
+                <div className="lg:w-[40%] lg:sticky lg:top-[80px] self-start flex flex-col gap-5">
                     <h1 className="text-[26px] font-bold leading-tight">{product.name}</h1>
 
                     <div className="flex items-center gap-4">
@@ -114,41 +100,9 @@ function Product() {
                         <p className="text-gray text-[13px]">Артикул: {String(product.id).padStart(6, "0")}</p>
                     </div>
 
-                    <div className="flex items-end gap-3">
-                        <p className={"text-[32px] font-bold " + (discount > 0 ? "text-sale" : "")}>
-                            {formatPrice(product.price)}
-                        </p>
-                        {discount > 0 && (
-                            <>
-                                <p className="text-gray line-through text-[18px] mb-1">{formatPrice(product.oldprice)}</p>
-                                <p className="bg-sale text-white text-[13px] font-bold px-2 py-1 mb-2">-{discount}%</p>
-                            </>
-                        )}
-                    </div>
-
-                    <p className="text-[14px]">
-                        Цвет: <span className="text-gray">{allColors[color].name}</span>
+                    <p className="text-[32px] font-bold">
+                        {formatPrice(product.price)}
                     </p>
-
-                    {/* мини-фото цветов */}
-                    {allColors.length > 1 && (
-                        <div className="flex gap-2 -mt-2">
-                            {allColors.map((c, index) => (
-                                <button
-                                    key={c.name}
-                                    onClick={() => setSearchParams(index > 0 ? { color: index } : {}, { replace: true })}
-                                    title={c.name}
-                                    className="relative group/color"
-                                >
-                                    <img src={c.images[0]} alt={c.name} className="w-14 h-[74px] object-cover bg-light" />
-                                    <span
-                                        className={"absolute bottom-0 left-0 h-[3px] bg-demix transition-all duration-300 " +
-                                            (index === color ? "w-full" : "w-0 group-hover/color:w-full")}
-                                    ></span>
-                                </button>
-                            ))}
-                        </div>
-                    )}
 
                     <SizeSelect
                         sizes={product.sizes}
@@ -199,8 +153,7 @@ function Product() {
                                 {Object.keys(product.specifications).map((key) => (
                                     <div key={key} className="flex justify-between py-1 border-b border-dashed border-line">
                                         <span className="text-gray">{specNames[key]}</span>
-                                        {/* цвет - тот, что выбран */}
-                                        <span>{key === "color" ? allColors[color].name : product.specifications[key]}</span>
+                                        <span>{product.specifications[key]}</span>
                                     </div>
                                 ))}
                             </div>

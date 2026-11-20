@@ -46,7 +46,7 @@ function BottomNav({ chatOpen, onToggleChat }) {
                                     key={item.title}
                                     to={item.link}
                                     onClick={() => setCatalogOpen(false)}
-                                    className={"py-3 border-b border-light " + (item.red ? "text-sale" : "")}
+                                    className="py-3 border-b border-light"
                                 >
                                     {item.title}
                                 </Link>

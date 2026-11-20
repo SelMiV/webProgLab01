@@ -8,7 +8,6 @@ const sortOptions = [
     { value: "expensive", title: "Сначала дороже" },
     { value: "rating", title: "По рейтингу отзывов" },
     { value: "new", title: "Сначала новинки" },
-    { value: "discount", title: "По убыванию скидки" },
 ];
 
 // свой выпадающий список

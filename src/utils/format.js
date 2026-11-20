@@ -12,9 +12,3 @@ export function productsWord(count) {
     if (last >= 2 && last <= 4 && (lastTwo < 10 || lastTwo >= 20)) return "товара";
     return "товаров";
 }
-
-// процент скидки
-export function getDiscount(price, oldprice) {
-    if (!oldprice) return 0;
-    return Math.round((1 - price / oldprice) * 100);
-}

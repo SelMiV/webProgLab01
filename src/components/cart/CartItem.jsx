@@ -9,7 +9,7 @@ function CartItem({ item }) {
     const { changeCount, removeFromCart } = useCart();
     const product = item.product;
     // ссылка на товар
-    const link = product.colorIndex > 0 ? `/product/${product.id}?color=${product.colorIndex}` : `/product/${product.id}`;
+    const link = `/product/${product.id}`;
 
     return (
         <div className="flex gap-4 py-5 border-b border-line">

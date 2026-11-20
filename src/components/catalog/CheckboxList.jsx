@@ -2,8 +2,7 @@ import { useState } from "react";
 
 import Checkbox from "./Checkbox";
 
-// colors если передать, рядом с названием рисуется цветной кружок (для выбора цвета)
-function CheckboxList({ options, checked, onToggle, colors }) {
+function CheckboxList({ options, checked, onToggle }) {
     const [showAll, setShowAll] = useState(false);
 
     const visible = showAll ? options : options.slice(0, 6);
@@ -15,7 +14,6 @@ function CheckboxList({ options, checked, onToggle, colors }) {
                     key={option.value}
                     title={option.value}
                     count={option.count}
-                    color={colors ? colors[option.value] : null}
                     checked={checked.includes(option.value)}
                     onChange={() => onToggle(option.value)}
                 />

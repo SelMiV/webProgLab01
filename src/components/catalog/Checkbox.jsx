@@ -1,6 +1,6 @@
 import { FiCheck } from "react-icons/fi";
 
-function Checkbox({ title, count, checked, onChange, color }) {
+function Checkbox({ title, count, checked, onChange }) {
     const disabled = count === 0 && !checked;
 
     return (
@@ -13,9 +13,6 @@ function Checkbox({ title, count, checked, onChange, color }) {
                 {checked && <FiCheck className="text-[16px]" />}
             </span>
 
-            {color && (
-                <span className="w-5 h-5 shrink-0 rounded-full border border-line" style={{ background: color }}></span>
-            )}
             <span>
                 {title}
                 {!disabled && <span className="text-gray"> ({count})</span>}

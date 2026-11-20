@@ -13,7 +13,7 @@ import Checkbox from "../../components/catalog/Checkbox.jsx";
 import CheckboxList from "../../components/catalog/CheckboxList.jsx";
 import PriceFilter from "../../components/catalog/PriceFilter.jsx";
 import PromoBanner from "../../components/catalog/PromoBanner.jsx";
-import { productsWord, getDiscount } from "../../utils/format.js";
+import { productsWord } from "../../utils/format.js";
 import useHideOnScroll from "../../hooks/useHideOnScroll.js";
 import useLocalStorage from "../../hooks/useLocalStorage.js";
 
@@ -33,16 +33,6 @@ const filterGroups2 = [
     { field: "season", title: "Сезон" },
 ];
 
-// цвета кружков в фильтре "Цвет"
-const colors = {
-    "черный": "#000000",
-    "темно-серый": "#555555",
-    "болотный": "#5b5e3b",
-    "бежевый": "#d9cbb4",
-    "кофейный": "#6f4e37",
-    "кремовый": "#f3ead8",
-};
-
 // пункт для примера, товаров с ним у нас нет - поэтому он будет серым
 const emptyOptions = {
     category: ["Аксессуары"],
@@ -55,7 +45,7 @@ const perPage = 12;
 const minPrice = Math.min(...products.map((p) => p.price));
 const maxPrice = Math.max(...products.map((p) => p.price));
 
-// значение поля товара: сначала ищем в самом товаре, потом в характеристиках (цвет, сезон)
+// значение поля товара: сначала ищем в самом товаре, потом в характеристиках (пол, сезон)
 function getValue(product, field) {
     return product[field] || product.specifications[field];
 }
@@ -79,7 +69,6 @@ function Catalog () {
     // фильтры. Начальные значения берем из адреса (так работают ссылки из меню)
     const [showFilters, setShowFilters] = useState(window.innerWidth >= 1024);  // на телефоне сначала скрыты
     const [onlyNew, setOnlyNew] = useState(searchParams.get("new") === "1");
-    const [onlySale, setOnlySale] = useState(searchParams.get("sale") === "1");
     const [priceFrom, setPriceFrom] = useState(minPrice);
     const [priceTo, setPriceTo] = useState(maxPrice);
     const [sizes, setSizes] = useState([]);
@@ -107,7 +96,6 @@ function Catalog () {
     function filterProducts(skip) {
         let result = products;
         if (onlyNew && skip !== "new") result = result.filter((product) => product.isNew);
-        if (onlySale && skip !== "sale") result = result.filter((product) => product.oldprice > 0);
         result = result.filter((product) => product.price >= priceFrom && product.price <= priceTo);
         if (sizes.length > 0 && skip !== "sizes") {
             // товар подходит, если у него есть хотя бы один из выбранных размеров
@@ -147,7 +135,6 @@ function Catalog () {
     if (sort === "expensive") list.sort((a, b) => b.price - a.price);
     if (sort === "rating") list.sort((a, b) => b.rating - a.rating);
     if (sort === "new") list.sort((a, b) => b.isNew - a.isNew);
-    if (sort === "discount") list.sort((a, b) => getDiscount(b.price, b.oldprice) - getDiscount(a.price, a.oldprice));
 
     // 3. делим на страницы
     const pagesCount = Math.ceil(list.length / perPage);
@@ -163,7 +150,6 @@ function Catalog () {
     if (checked.category && checked.category.length === 1) title = checked.category[0];
     if (section) title = section;
     if (onlyNew) title = "Новинки";
-    if (onlySale) title = "Скидки";
 
     // хлебные крошки: Главная / Мужчинам / Одежда (или Главная / Каталог / Брюки)
     let crumbs = [{ title: title }];
@@ -210,7 +196,6 @@ function Catalog () {
 
     function resetFilters() {
         setOnlyNew(false);
-        setOnlySale(false);
         setPriceFrom(minPrice);
         setPriceTo(maxPrice);
         setSizes([]);
@@ -250,7 +235,7 @@ function Catalog () {
             {/* полоска "Скрыть фильтры" и сортировка - прилипает под шапкой,
                 листаем вниз - уезжает вверх вместе с шапкой, вверх - выезжает обратно */}
             <div className={"sticky z-30 bg-white flex justify-between items-center py-3 mt-4 transition-all duration-300 " +
-                (headerHidden ? "-top-[80px]" : "top-[60px] md:top-[100px]")}>
+                (headerHidden ? "-top-[80px]" : "top-[60px]")}>
                 <button onClick={() => setShowFilters(!showFilters)} className="flex items-center gap-2 font-bold text-[15px]">
                     <FiSliders className="text-[20px]" />
                     {showFilters ? "Скрыть фильтры" : "Показать фильтры"}
@@ -282,12 +267,6 @@ function Catalog () {
                                 checked={onlyNew}
                                 onChange={() => { setOnlyNew(!onlyNew); goFirstPage(); }}
                             />
-                            <Checkbox
-                                title="Скидки"
-                                count={filterProducts("sale").filter((p) => p.oldprice > 0).length}
-                                checked={onlySale}
-                                onChange={() => { setOnlySale(!onlySale); goFirstPage(); }}
-                            />
                         </div>
 
                         {/* блок "Пол" не показываем, если пол уже выбран (меню, баннер) */}
@@ -312,15 +291,6 @@ function Catalog () {
                                     </button>
                                 ))}
                             </div>
-                        </FilterBlock>
-
-                        <FilterBlock title="Цвет">
-                            <CheckboxList
-                                options={getOptions("color")}
-                                checked={checked.color || []}
-                                onToggle={(value) => toggleChecked("color", value)}
-                                colors={colors}
-                            />
                         </FilterBlock>
 
                         {filterGroups2.map(renderGroup)}
@@ -353,7 +323,7 @@ function Catalog () {
     )
 }
 
-// когда переходим по ссылке из меню (например, с "Брюки" на "Скидки"),
+// когда переходим по ссылке из меню (например, с "Брюки" на "Обувь"),
 // каталог рисуется заново, и фильтры берутся из нового адреса.
 // номер страницы при этом не считается - иначе фильтры сбрасывались бы при листании
 function CatalogPage() {
